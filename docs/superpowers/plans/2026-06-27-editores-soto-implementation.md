@@ -180,8 +180,8 @@ ADMIN_EMAILS=pyneal.systems@gmail.com
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://pzpnmlifqqodqpdifcga.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=REDACTED_SUPABASE_ANON_KEY
-SUPABASE_SERVICE_ROLE_KEY=REDACTED_SUPABASE_SERVICE_ROLE_KEY
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<from-supabase-dashboard>
+SUPABASE_SERVICE_ROLE_KEY=<from-supabase-dashboard>
 ADMIN_EMAILS=pyneal.systems@gmail.com
 ```
 
