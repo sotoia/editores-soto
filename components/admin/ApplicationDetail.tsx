@@ -58,6 +58,7 @@ export default function ApplicationDetail({ app }: { app: App }) {
   const [status, setStatus] = useState(app.status);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<Date | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -69,16 +70,26 @@ export default function ApplicationDetail({ app }: { app: App }) {
 
   const save = async (newStatus: App["status"]) => {
     setSaving(true);
-    const res = await fetch(`/api/admin/applications/${app.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus, admin_notes: notes }),
-    });
-    setSaving(false);
-    if (res.ok) {
-      setStatus(newStatus);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/applications/${app.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({ status: newStatus, admin_notes: notes }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data?.ok) {
+        setError(data?.error || `Error ${res.status} guardando cambios`);
+        return;
+      }
+      setStatus(data.status as App["status"]);
       setSavedAt(new Date());
       router.refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Error de red");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -142,11 +153,15 @@ export default function ApplicationDetail({ app }: { app: App }) {
             ↺ Pendiente
           </StatusButton>
         </div>
-        {savedAt && (
-          <div className="mt-2 text-xs text-white/40">
-            Guardado a las {savedAt.toLocaleTimeString("es-ES")}
+        {error ? (
+          <div className="mt-3 px-3 py-2 rounded-lg bg-red-500/15 border border-red-500/30 text-red-200 text-xs">
+            {error}
           </div>
-        )}
+        ) : savedAt ? (
+          <div className="mt-2 text-xs text-green-300/70">
+            ✓ Guardado a las {savedAt.toLocaleTimeString("es-ES")}
+          </div>
+        ) : null}
       </div>
 
       {/* Right sidebar with info + notes */}
