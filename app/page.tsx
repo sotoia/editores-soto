@@ -23,7 +23,7 @@ export default function Home() {
         />
 
         <p className="text-white/70 text-sm mt-2">
-          Sube tu clip de prueba abajo (40–60s, máx 50 MB).
+          Sube tu clip de prueba abajo (40–60s, máx 120 MB).
         </p>
       </section>
       <ApplicationForm />
