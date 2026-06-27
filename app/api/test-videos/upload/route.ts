@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { UploadIntentSchema } from "@/lib/schema";
-import { supabaseAdmin } from "@/lib/supabase/server";
+import { signUploadUrl } from "@/lib/r2";
 
 export async function POST(req: NextRequest) {
   let body: unknown;
@@ -19,22 +19,18 @@ export async function POST(req: NextRequest) {
   }
 
   const { filename, content_type } = parsed.data;
-  const ext = filename.split(".").pop()?.toLowerCase() || "mp4";
-  const path = `${crypto.randomUUID()}.${ext}`;
+  const ext = filename.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || "mp4";
+  const key = `submissions/${crypto.randomUUID()}.${ext}`;
 
-  const db = supabaseAdmin();
-  const { data, error } = await db.storage
-    .from("test-videos")
-    .createSignedUploadUrl(path);
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  try {
+    const signedUrl = await signUploadUrl(key, content_type);
+    return NextResponse.json({
+      path: key,
+      signed_url: signedUrl,
+      content_type,
+    });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Failed to sign upload URL";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
-
-  return NextResponse.json({
-    path,
-    token: data.token,
-    signed_url: data.signedUrl,
-    content_type,
-  });
 }
