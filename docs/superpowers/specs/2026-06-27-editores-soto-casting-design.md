@@ -60,6 +60,7 @@ Tres unidades con un propósito claro cada una:
 | `age` | `int` not null | check 16–80 |
 | `country` | `text` not null | ISO-2 o nombre libre (form usa `react-select` con lista) |
 | `email` | `text` not null | índice único para evitar duplicados |
+| `whatsapp` | `text` | opcional, formato E.164 sugerido (ej. `+34600123123`), validación suave en cliente |
 | `price_per_clip` | `numeric(10,2)` not null | coste por clip 30–60s |
 | `currency` | `text` not null | `EUR` / `USD` (default `EUR`) |
 | `software` | `text[]` not null | subset de `{davinci, aftereffects, premiere, capcut}` |
@@ -87,7 +88,7 @@ Tres unidades con un propósito claro cada una:
 
 1. **Hero.** Fondo `liquid-gradient` con parámetros del usuario. Título grande, subtítulo explicativo y un embed (lite-youtube) del vídeo de referencia.
 2. **Formulario.** Una sola página partida en secciones glass:
-   - Sobre ti: nombre, edad, país, email.
+   - Sobre ti: nombre, edad, país, email, WhatsApp (opcional).
    - Trabajo: precio por clip + divisa, software (checkboxes), años de experiencia, descripción libre.
    - Portfolio: campo `portfolio_url` + lista dinámica de hasta 5 enlaces de trabajos previos.
    - Prueba: explicación + dropzone con vídeo de 40–60s, máx 200 MB. Cliente verifica duración con `<video>.duration` antes de subir.
