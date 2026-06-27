@@ -1,5 +1,3 @@
-"use client";
-import LiquidGlass from "liquid-glass-react";
 import { ReactNode } from "react";
 
 type Props = {
@@ -9,18 +7,10 @@ type Props = {
 
 export default function GlassCard({ children, className = "" }: Props) {
   return (
-    <LiquidGlass
-      displacementScale={64}
-      blurAmount={0.1}
-      saturation={130}
-      aberrationIntensity={2}
-      elasticity={0.35}
-      cornerRadius={24}
-      padding="32px"
-      mode="standard"
-      className={`text-white ${className}`}
+    <div
+      className={`rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)] p-8 ${className}`}
     >
       {children}
-    </LiquidGlass>
+    </div>
   );
 }
