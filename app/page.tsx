@@ -1,6 +1,5 @@
-import Image from "next/image";
 import ApplicationForm from "@/components/form/ApplicationForm";
-import GlassCard from "@/components/GlassCard";
+import HeroVideo from "@/components/HeroVideo";
 
 const SOURCE_VIDEO_URL = process.env.NEXT_PUBLIC_SOURCE_VIDEO_URL || "";
 
@@ -17,57 +16,13 @@ export default function Home() {
           partir de este vídeo:
         </p>
 
-        <GlassCard className="!p-3">
-          <div className="aspect-video w-full overflow-hidden rounded-2xl">
-            <Image
-              src="/hero-elgato.png"
-              alt="Vídeo de referencia SOTO.IA"
-              width={1920}
-              height={1080}
-              priority
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </GlassCard>
+        <HeroVideo
+          youtubeId="2pUKG8vIQLM"
+          thumbnailSrc="/hero-elgato.png"
+          downloadUrl={SOURCE_VIDEO_URL || undefined}
+        />
 
-        <div className="flex flex-wrap justify-center gap-3">
-          <a
-            href="https://youtu.be/2pUKG8vIQLM"
-            target="_blank"
-            rel="noreferrer"
-            className="px-5 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition"
-          >
-            ▶ Ver en YouTube
-          </a>
-          {SOURCE_VIDEO_URL ? (
-            <a
-              href={SOURCE_VIDEO_URL}
-              className="px-5 py-3 rounded-xl bg-white/10 border border-white/15 hover:bg-white/15 transition"
-              download
-            >
-              ⬇ Descargar vídeo fuente (.mp4)
-            </a>
-          ) : (
-            <span
-              className="px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-              title="Disponible en breve"
-            >
-              ⬇ Descargar vídeo fuente (próximamente)
-            </span>
-          )}
-        </div>
-
-        <div className="aspect-video w-full overflow-hidden rounded-2xl border border-white/10 mt-4">
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/2pUKG8vIQLM"
-            title="Vídeo de referencia SOTO.IA"
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
-
-        <p className="text-white/70 text-sm">
+        <p className="text-white/70 text-sm mt-2">
           Sube tu clip de prueba abajo (40–60s, máx 50 MB).
         </p>
       </section>
