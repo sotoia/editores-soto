@@ -6,9 +6,11 @@ import PersonalSection from "./PersonalSection";
 import WorkSection from "./WorkSection";
 import PortfolioSection from "./PortfolioSection";
 import VideoUploadSection from "./VideoUploadSection";
-import type { Software } from "@/lib/schema";
+import BriefPicker from "./BriefPicker";
+import type { Software, Brief } from "@/lib/schema";
 
 type FormState = {
+  brief: Brief | null;
   full_name: string;
   age: string;
   country: string;
@@ -26,6 +28,7 @@ type FormState = {
 };
 
 const INITIAL: FormState = {
+  brief: null,
   full_name: "",
   age: "",
   country: "",
@@ -51,7 +54,7 @@ export default function ApplicationForm() {
   const patch = (p: Partial<FormState>) => setS((prev) => ({ ...prev, ...p }));
 
   const canSubmit =
-    s.full_name && s.age && s.country && s.email &&
+    s.brief && s.full_name && s.age && s.country && s.email &&
     s.price_per_clip && s.software.length > 0 && s.experience_years &&
     s.test_video_path;
 
@@ -62,6 +65,7 @@ export default function ApplicationForm() {
     setError(null);
 
     const payload = {
+      brief: s.brief,
       full_name: s.full_name.trim(),
       age: Number(s.age),
       country: s.country,
@@ -95,6 +99,14 @@ export default function ApplicationForm() {
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-6 w-full max-w-2xl">
+      <GlassCard>
+        <h2 className="text-xl font-semibold mb-4">Elige tu brief</h2>
+        <p className="text-sm text-white/60 mb-4">
+          Mismo vídeo fuente, dos enfoques distintos. Elige el que quieras editar.
+        </p>
+        <BriefPicker value={s.brief} onChange={(b) => patch({ brief: b })} />
+      </GlassCard>
+
       <GlassCard>
         <h2 className="text-xl font-semibold mb-4">Sobre ti</h2>
         <PersonalSection values={s} onChange={patch} />

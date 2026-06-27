@@ -3,6 +3,9 @@ import { z } from "zod";
 export const SOFTWARE_OPTIONS = ["davinci", "aftereffects", "premiere", "capcut"] as const;
 export type Software = typeof SOFTWARE_OPTIONS[number];
 
+export const BRIEF_OPTIONS = ["elgato", "autocont"] as const;
+export type Brief = typeof BRIEF_OPTIONS[number];
+
 export const WorkLinkSchema = z.object({
   label: z.string().min(1).max(80),
   url: z.string().url(),
@@ -23,6 +26,7 @@ export const ApplicationInputSchema = z.object({
   portfolio_url: z.string().url().max(300).optional().nullable(),
   test_video_path: z.string().min(1),
   test_video_size_mb: z.number().nonnegative().optional().nullable(),
+  brief: z.enum(BRIEF_OPTIONS),
 });
 
 export type ApplicationInput = z.infer<typeof ApplicationInputSchema>;
