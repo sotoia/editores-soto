@@ -24,6 +24,12 @@ type App = {
   admin_notes: string | null;
 };
 
+const CONTAINER_TINT: Record<App["status"], string> = {
+  pending: "border-white/10 bg-white/[0.04]",
+  shortlisted: "border-green-500/40 bg-green-500/[0.08] shadow-[0_0_40px_-12px_rgba(34,197,94,0.45)]",
+  rejected: "border-red-500/40 bg-red-500/[0.06] shadow-[0_0_36px_-14px_rgba(239,68,68,0.4)]",
+};
+
 const BRIEF_LABEL: Record<App["brief"], string> = {
   elgato: "Elgato Prompter",
   autocont: "AUTOCONT",
@@ -79,7 +85,7 @@ export default function ApplicationDetail({ app }: { app: App }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-6">
       {/* Vertical video player */}
-      <div className="rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-5 flex flex-col items-center">
+      <div className={`rounded-3xl border backdrop-blur-2xl p-5 flex flex-col items-center transition-colors ${CONTAINER_TINT[status]}`}>
         <div className="w-full flex items-center justify-between mb-4">
           <div className="text-xs uppercase tracking-wider text-white/50">Vídeo de prueba</div>
           {videoUrl && (
@@ -145,7 +151,7 @@ export default function ApplicationDetail({ app }: { app: App }) {
 
       {/* Right sidebar with info + notes */}
       <aside className="flex flex-col gap-5">
-        <div className="rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-5">
+        <div className={`rounded-3xl border backdrop-blur-2xl p-5 transition-colors ${CONTAINER_TINT[status]}`}>
           <div className="flex items-start gap-4">
             <div className="grid place-items-center w-14 h-14 rounded-full bg-white/10 text-lg font-semibold shrink-0">
               {initials(app.full_name) || "?"}

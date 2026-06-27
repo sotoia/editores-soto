@@ -26,6 +26,14 @@ const STATUS_STYLE: Record<Row["status"], string> = {
   rejected: "bg-red-500/20 text-red-300 border-red-500/30",
 };
 
+const CARD_TINT: Record<Row["status"], string> = {
+  pending: "border-white/10 bg-white/[0.04] hover:border-white/30",
+  shortlisted:
+    "border-green-500/40 bg-green-500/[0.08] hover:border-green-400/60 shadow-[0_0_30px_-10px_rgba(34,197,94,0.45)]",
+  rejected:
+    "border-red-500/35 bg-red-500/[0.06] hover:border-red-400/55 shadow-[0_0_28px_-12px_rgba(239,68,68,0.4)]",
+};
+
 const BRIEF_LABEL: Record<Row["brief"], string> = {
   elgato: "Elgato Prompter",
   autocont: "AUTOCONT",
@@ -51,7 +59,7 @@ export default function ApplicationCard({ row }: { row: Row }) {
   return (
     <Link
       href={`/admin/${row.id}`}
-      className="group block rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-5 hover:border-white/30 hover:bg-white/[0.06] transition"
+      className={`group block rounded-2xl border backdrop-blur-2xl p-5 transition ${CARD_TINT[row.status]}`}
     >
       <div className="flex items-start gap-4">
         <div className="grid place-items-center w-12 h-12 rounded-full bg-white/10 text-white font-semibold shrink-0">

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ApplicationInputSchema } from "@/lib/schema";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { sendApplicationConfirmation } from "@/lib/google/gmail";
 
 export async function POST(req: NextRequest) {
   let body: unknown;
@@ -37,6 +38,11 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+
+  // Fire-and-forget email — never block the response if Gmail isn't configured yet.
+  sendApplicationConfirmation(parsed.data).catch((e) => {
+    console.error("[gmail] confirmation failed:", e instanceof Error ? e.message : e);
+  });
 
   return NextResponse.json({ id: data.id }, { status: 201 });
 }
