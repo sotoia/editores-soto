@@ -8,7 +8,9 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl;
-  if (!url.pathname.startsWith("/admin")) return NextResponse.next();
+  const isAdminPage = url.pathname.startsWith("/admin");
+  const isAdminApi = url.pathname.startsWith("/api/admin");
+  if (!isAdminPage && !isAdminApi) return NextResponse.next();
   if (url.pathname === "/admin/login" || url.pathname.startsWith("/admin/auth")) {
     return NextResponse.next();
   }
@@ -19,6 +21,9 @@ export async function middleware(req: NextRequest) {
   const email = data.user?.email?.toLowerCase();
 
   if (!email || !ADMIN_EMAILS.includes(email)) {
+    if (isAdminApi) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const redirect = url.clone();
     redirect.pathname = "/admin/login";
     return NextResponse.redirect(redirect);
@@ -27,5 +32,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };
