@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LiquidGradient from "@/components/LiquidGradient";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,7 +10,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body className="bg-black text-white antialiased">{children}</body>
+      <body className="bg-black text-white antialiased">
+        <LiquidGradient />
+        {children}
+      </body>
     </html>
   );
 }
