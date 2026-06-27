@@ -12,6 +12,7 @@ export default function VideoUploadSection({ onUploaded }: Props) {
   const [filename, setFilename] = useState<string | null>(null);
 
   const onFile = async (file: File) => {
+    if (progress === "checking" || progress === "uploading") return;
     setError(null);
     setFilename(file.name);
     setProgress("checking");
