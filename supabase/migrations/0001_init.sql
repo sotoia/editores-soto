@@ -38,7 +38,7 @@ create policy "anon can insert applications"
 
 -- Storage bucket
 insert into storage.buckets (id, name, public, file_size_limit)
-  values ('test-videos', 'test-videos', false, 209715200)  -- 200 MB
+  values ('test-videos', 'test-videos', false, 52428800)  -- 50 MB (Supabase free tier cap)
   on conflict (id) do nothing;
 
 -- Storage policies: anon can insert via signed upload URL only.

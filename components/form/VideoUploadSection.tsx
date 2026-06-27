@@ -17,8 +17,8 @@ export default function VideoUploadSection({ onUploaded }: Props) {
     setFilename(file.name);
     setProgress("checking");
 
-    if (file.size > 200 * 1024 * 1024) {
-      setError("El vídeo supera los 200 MB. Comprímelo y vuelve a intentarlo.");
+    if (file.size > 50 * 1024 * 1024) {
+      setError("El vídeo supera los 50 MB. Comprímelo (1080×1920 a 8–10 Mbps cabe sobrado) y vuelve a intentarlo.");
       setProgress("error");
       return;
     }
@@ -75,7 +75,7 @@ export default function VideoUploadSection({ onUploaded }: Props) {
   return (
     <div className="flex flex-col gap-3">
       <div className="text-sm text-white/70">
-        Sube un clip vertical de 40–60 segundos hecho a partir del vídeo de referencia.
+        Sube un clip vertical de 40–60 segundos hecho a partir del vídeo de referencia (máx 50 MB).
       </div>
       <input
         ref={inputRef}

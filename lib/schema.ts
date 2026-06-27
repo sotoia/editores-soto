@@ -29,7 +29,7 @@ export type ApplicationInput = z.infer<typeof ApplicationInputSchema>;
 
 export const UploadIntentSchema = z.object({
   filename: z.string().min(1).max(200),
-  size_bytes: z.number().int().positive().max(200 * 1024 * 1024),
+  size_bytes: z.number().int().positive().max(50 * 1024 * 1024),
   content_type: z.string().regex(/^video\//),
 });
 
