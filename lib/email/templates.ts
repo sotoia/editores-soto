@@ -35,7 +35,10 @@ function esc(s: string) {
 }
 
 export function applicationReceivedSubject(name: string) {
-  return `He recibido tu candidatura, ${name.split(" ")[0] || "buenas"} · SOTO.IA`;
+  const first = name.split(" ")[0] || "";
+  return first
+    ? `Gracias por mandarme tu prueba, ${first}`
+    : `Gracias por mandarme tu prueba`;
 }
 
 export function applicationReceivedText(app: ApplicationSummary) {

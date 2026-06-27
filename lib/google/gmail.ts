@@ -18,22 +18,25 @@ function toBase64Url(input: string) {
 function buildRfc2822({
   from,
   to,
+  replyTo,
   subject,
   text,
   html,
 }: {
   from: string;
   to: string;
+  replyTo: string;
   subject: string;
   text: string;
   html: string;
 }) {
-  const boundary = `--boundary_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+  const boundary = `--b_${Date.now()}_${Math.random().toString(36).slice(2)}`;
   const encodedSubject = `=?UTF-8?B?${Buffer.from(subject, "utf-8").toString("base64")}?=`;
 
   const lines = [
     `From: ${from}`,
     `To: ${to}`,
+    `Reply-To: ${replyTo}`,
     `Subject: ${encodedSubject}`,
     `MIME-Version: 1.0`,
     `Content-Type: multipart/alternative; boundary="${boundary}"`,
@@ -58,14 +61,15 @@ function buildRfc2822({
 
 export async function sendApplicationConfirmation(app: ApplicationSummary) {
   const senderAddress = process.env.GMAIL_SENDER || "pyneal.systems@gmail.com";
-  const senderName = process.env.GMAIL_SENDER_NAME || "SOTO.IA Casting";
+  const senderName = process.env.GMAIL_SENDER_NAME || "Ivan · SOTO.IA";
   const from = `"${senderName}" <${senderAddress}>`;
+  const replyTo = senderAddress;
 
   const subject = applicationReceivedSubject(app.full_name);
   const text = applicationReceivedText(app);
   const html = applicationReceivedHtml(app);
 
-  const raw = toBase64Url(buildRfc2822({ from, to: app.email, subject, text, html }));
+  const raw = toBase64Url(buildRfc2822({ from, to: app.email, replyTo, subject, text, html }));
 
   const auth = getAuthedOAuthClient();
   const gmail = google.gmail({ version: "v1", auth });
